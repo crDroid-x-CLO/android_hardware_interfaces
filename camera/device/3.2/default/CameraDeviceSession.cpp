@@ -928,12 +928,15 @@ bool CameraDeviceSession::preProcessConfigurationLocked(
         } else {
 // QTI_BEGIN: 2018-06-20: Camera/Camera_Linux: frameworks: Update HIDL overrideFormat from HAL
             // width/height must not change, but usage/rotation might need to change
-            // format might change and get updated with overrideFormat
+            // format might change and get updated with TARGET_CAMERA_OVERRIDE_FORMAT_FROM_RESERVED
 // QTI_END: 2018-06-20: Camera/Camera_Linux: frameworks: Update HIDL overrideFormat from HAL
             if (mStreamMap[id].stream_type !=
                     (int) requestedConfiguration.streams[i].streamType ||
                     mStreamMap[id].width != requestedConfiguration.streams[i].width ||
                     mStreamMap[id].height != requestedConfiguration.streams[i].height ||
+#ifndef TARGET_CAMERA_OVERRIDE_FORMAT_FROM_RESERVED
+                    mStreamMap[id].format != (int) requestedConfiguration.streams[i].format ||
+#endif
                     mStreamMap[id].data_space !=
                             mapToLegacyDataspace( static_cast<android_dataspace_t> (
                                     requestedConfiguration.streams[i].dataSpace))) {

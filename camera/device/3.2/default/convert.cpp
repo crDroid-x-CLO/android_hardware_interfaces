@@ -75,8 +75,10 @@ void convertFromHidl(const Stream &src, Camera3Stream* dst) {
     dst->rotation = (int) src.rotation;
     dst->usage = (uint32_t) src.usage;
 // QTI_BEGIN: 2018-06-20: Camera/Camera_Linux: frameworks: Update HIDL overrideFormat from HAL
+#ifdef TARGET_CAMERA_OVERRIDE_FORMAT_FROM_RESERVED
     dst->reserved[0] = NULL;
     dst->reserved[1] = NULL;
+#endif
 // QTI_END: 2018-06-20: Camera/Camera_Linux: frameworks: Update HIDL overrideFormat from HAL
     // Fields to be filled by HAL (max_buffers, priv) are initialized to 0
     dst->max_buffers = 0;
@@ -102,6 +104,7 @@ void convertToHidl(const Camera3Stream* src, HalStream* dst) {
     }
 // QTI_BEGIN: 2018-06-20: Camera/Camera_Linux: frameworks: Update HIDL overrideFormat from HAL
 
+#ifdef TARGET_CAMERA_OVERRIDE_FORMAT_FROM_RESERVED
     HalStream* halStream = NULL;
     if (src->reserved[0] != NULL) {
         halStream = (HalStream*)(src->reserved[0]);
@@ -118,6 +121,7 @@ void convertToHidl(const Camera3Stream* src, HalStream* dst) {
             dst->consumerUsage = (BufferUsageFlags)halStream->consumerUsage;
         }
     }
+#endif
 // QTI_END: 2018-06-20: Camera/Camera_Linux: frameworks: Update HIDL overrideFormat from HAL
 }
 
